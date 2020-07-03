@@ -1,0 +1,104 @@
+Tony's design notes and ideas
+
+
+Goal:
+
+Create a program that permits the user to play RPS
+- The user may select two game *type*
+	-- best_of (best of odd number of rounds: 3 lowest, 100 highest)
+	-- straight (set number of rounds: 1 lowest, 100 highest)
+- The user may also select player types (or let the computer do it for one or both players)
+- The program will then play the appropriate number of games (x games if StraightGame or until one winner has over 50% of wins for BestOf)
+	- The program will display win/loss for each game
+- At the end, the computer will display statistics:
+	- player name and player type
+	- wins/losses
+	- winning moves in order (e.g., Won 15 times with Rock, 12 times with Scissors, and 8 times with Paper) -- both per player and overall
+- The program will be invoked from a separate files
+- The program will hide all private functions that are not part of the interface (using  double underscores (dunders) in front of the function name)
+
+
+///////////////////////////////////////////////////
+
+
+Main Displays Intro
+Main asks the desired game type
+
+
+
+///////////////////////////////////////////////////
+
+
+Games Types
+	- Game is an abstract type and can't be instantiated
+	- StraightGame is a Game
+	- BestOf is a Game
+
+Note: Game has two Players (instantiates two player objects)
+- Game asks the desired player types
+
+Game "introduces"/creates two players of type selected
+
+Game asks players to make moves
+
+Game determines who won based on rules
+
+Game keeps score each round with statistics
+- number of each move per player
+- ranked winning moves per player
+
+Game cycles through number of rounds based on game type
+- if number of rounds completed for straight, game gives results and exits game
+- if number of wins of a player exceeds half the round limit, game gives results and exits game
+
+
+Game exits with printed stats.
+
+
+///////////////////////////////////////////////
+
+
+Player has five types
+	- Player is an abstract type and can't be instantiated
+	- Random (chooses at random, doesn't *learn*)
+	- Reflect (uses other players last move. First move is random)
+	- Cycle ()
+	- Human
+	- Smart (uses game history of wins to select next move after round 5. Until then it is random)
+
+
+All players can make one of three moves each round
+All game types have rules based on these moves
+
+Player introduces themselves at beginning of round with name and type
+
+Player makes move on what they've learned
+- Reflect 
+	- learned from other's last move
+- Smart 
+	- learned from highest number of winning "moves" up until this point
+- Cycle 
+	- learned from cycling through each 
+- Random 
+	- learned from random
+- Human 
+	- learned from human choice
+
+
+
+
+
+
+The user may select the following game modes:
+
+- What game type?
+	- game type specified and number of rounds specified by user
+	- game type randomly selected with number of rounds automatically selected
+	- game type randomly selected by set number of rounds
+	Note: both players are expected to play at the same time, so no need to determine who goes first
+
+- What player type?
+	- human v human?
+	- human v computer?
+	- computer v computer?
+	-- for computer player? what type of computer player? specific one? randomly generated each round? play different types in sequence each round?
