@@ -60,15 +60,13 @@ class Game:
     def __computer_player_type(self, player_num):
         #
         type = []
+        #
+        # print menu of options, get input, and append to list
         options = [ [1, "PC-Random"], [2, "PC-Reflects"], [3, "PC-Cycles"],
                     [4, "PC-Learns"]]
-        #
-        # print menu of options
         print(f"\nPlease select computer player {player_num} type:")
         self.__print_options(options)
         print("(5) Surprise me!")
-        #
-        # get user input and append valid input to list
         type.append(self.__get_int_value(1, 5))
         #
         # if "surprise me", then reset type[0] to random value 1-4
@@ -93,7 +91,7 @@ class Game:
         # 
         while True:
             try:
-                value = int(input())
+                value = int(input(">>> "))
                 if (value >= low and value <= high):
                     break
                 else:
@@ -105,16 +103,15 @@ class Game:
 
     def __is_human_playing(self):
         #
-        while True:
-            query = input("\nWould you like to\n(1) play against the computer "
-                "or\n(2) have the computer play another computer player?\n")
-            if (query != "1" and query != "2"):
-                print("Please enter a valid option.")
-            else:
-                if query == "1":
-                    return True # human will be playing
-                else:
-                    return False # computer v computer
+        options = [[1, "Play against the Computer"], 
+                   [2, "Have Computer play against a second Computer player"]]
+        print("\nWhould you like to:")
+        self.__print_options(options)
+        query = self.__get_int_value(1, 2)
+        if query == 1:
+            return True
+        else:
+            return False
 
 
     def __set_game_type(self):
@@ -156,7 +153,7 @@ class Game:
         #
         # request name until user actually enters something
         while True:
-            user_name = input("Please enter your name:\n")
+            user_name = input("Please enter your name:\n>>> ")
             if user_name == "":
                 print("It's much better if I know your name!")
             else:
