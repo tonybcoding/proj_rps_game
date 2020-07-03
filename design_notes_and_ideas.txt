@@ -4,10 +4,10 @@ Tony's design notes and ideas
 Goal:
 
 Create a program that permits the user to play RPS
-- The user may select two game *type*
+- DONE: The user may select two game *type*
 	-- best_of (best of odd number of rounds: 3 lowest, 100 highest)
 	-- straight (set number of rounds: 1 lowest, 100 highest)
-- The user may also select player types (or let the computer do it for one or both players)
+- DONE: The user may also select player types (or let the computer do it for one or both players)
 - The program will then play the appropriate number of games (x games if StraightGame or until one winner has over 50% of wins for BestOf)
 	- The program will display win/loss for each game
 - At the end, the computer will display statistics:
@@ -29,10 +29,7 @@ Main asks the desired game type
 ///////////////////////////////////////////////////
 
 
-Games Types
-	- Game is an abstract type and can't be instantiated
-	- StraightGame is a Game
-	- BestOf is a Game
+Games Class
 
 Note: Game has two Players (instantiates two player objects)
 - Game asks the desired player types
