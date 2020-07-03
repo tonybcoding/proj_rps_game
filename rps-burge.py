@@ -20,21 +20,20 @@ class Game:
         self.__game_settings()
         #
         # for each gamer in list, instantiate the appropriate player object
-        self.player_list = []
-        for gamer in self.game_player_list:
-            self.player_list.append(self.__instantiate_player(gamer[1]))
+        self.player1 = self.__instantiate_player(self.game_player_list[0][1])
+        self.player2 = self.__instantiate_player(self.game_player_list[1][1])
         #
         # play game
         self.__play_game()
 
     def __play_game(self):
-        print(f"\n{self.player_list[0].name} and {self.player_list[1].name} "
+        print(f"\n{self.player1.name} and {self.player2.name} "
               f"have entered the ring!")
         print(f"Game starts now!\n")
+        #
         # sending opponent object so current play can compare
-        self.player_list[0].throw(self.player_list[1])
-        self.player_list[1].throw(self.player_list[0])
-
+        self.player1.throw(self.player2)
+        self.player2.throw(self.player1)
 
     def __instantiate_player(self, player):
         #
