@@ -18,13 +18,6 @@ Create a program that permits the user to play RPS
 - The program will hide all private functions that are not part of the interface (using  double underscores (dunders) in front of the function name)
 
 
-///////////////////////////////////////////////////
-
-
-Main Displays Intro
-Main asks the desired game type
-
-
 
 ///////////////////////////////////////////////////
 
@@ -32,7 +25,11 @@ Main asks the desired game type
 Games Class
 
 Note: Game has two Players (instantiates two player objects)
-- Game asks the desired player types
+
+
+Game Displays Intro
+
+Game asks the desired game type, number of rounds and type of players
 
 Game "introduces"/creates two players of type selected
 
