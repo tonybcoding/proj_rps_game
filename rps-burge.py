@@ -1,6 +1,5 @@
 import random
-
-
+import math
 legal_moves = ["rock", "paper", "scissors"]
 
 
@@ -20,46 +19,103 @@ class Game:
         # play game
         self.play_game()
 
-    def play_game(self):
+    def announce_players(self):
         #
         print(f"\n{self.player1.name} and {self.player2.name} "
               f"have entered the ring!")
         print(f"Game starts now!\n")
+
+    def play_round(self, round):
         #
+        # move list will contain [player 1 move, player 2 move]
+        move_list = self.get_next_moves(round)
+        p1_move, p2_move = move_list[0], move_list[1]
         #
-        # sending opponent object so current play can compare
-        p1_move = ""
-        p2_move = ""
-        for n in range(1, 50):
+        # check who won and add won item to winners list
+        move_winner = self.get_move_winner(p1_move, p2_move)
+        #
+        # persist moves of both players
+        self.player1.move_list.append(p1_move)
+        self.player2.move_list.append(p2_move)
+
+    def get_move_winner(self, p1_move, p2_move):
+        #
+        if ((p1_move == "rock" and p2_move == "scissors") or
+           (p1_move == "scissors" and p2_move == "paper") or
+           (p1_move == "paper" and p2_move == "rock")):
+            # persist winning move of player 1
+            self.player1.winning_move_list.append(p1_move)
+            print(f"{self.player1.name} wins")
+        else:
+            # persist winning move of player 2
+            self.player2.winning_move_list.append(p2_move)
+            print(f"{self.player2.name} wins")
+
+    def get_next_moves(self, round):
+        #
+        # delcare local variables
+        p1_move, p2_move = "", ""
+        #
+        # prevent a tie
+        while p1_move == p2_move:
+            #
             p1_move = self.player1.throw(self.player2)
             p2_move = self.player2.throw(self.player1)
-            print(f"(Round {n})\t", end="")
+            print(f"(Round {round})\t", end="")
             play_str = (f"{self.player1.name} /{p1_move}/ vs. "
                         f"{self.player2.name} /{p2_move}/")
             print(play_str + " " * (50 - len(play_str)), end="")
-            # persist moves of both players
-            self.player1.move_list.append(p1_move)
-            self.player2.move_list.append(p2_move)
-
-            # see who wins this round
+            #
+            # show results
             print("--> ", end="")
             if (p1_move == p2_move):
-                print("Tie")
-            elif ((p1_move == "rock" and p2_move == "scissors") or
-                  (p1_move == "scissors" and p2_move == "paper") or
-                  (p1_move == "paper" and p2_move == "rock")):
-                # persist winning move of player 1
-                self.player1.winning_move_list.append(p1_move)
-                print(f"{self.player1.name} wins")
-            else:
-                # persist winning move of player 2
-                self.player2.winning_move_list.append(p2_move)
-                print(f"{self.player2.name} wins")
+                print("Tie -- replaying round")
+        return [p1_move, p2_move]
 
-        print(f"Final score: {self.player1.name} - "
-              f"{len(self.player1.winning_move_list)}")
-        print(f"Final score: {self.player2.name} - "
-              f"{len(self.player2.winning_move_list)}")
+    def play_game(self):
+        #
+        # declare local variables
+        round = 0
+        #
+        self.announce_players()
+        #
+        # loop through number of rounds
+        for round in range(1, self.game_rounds + 1):
+            self.play_round(round)
+            # if game type integer is 2, which is Best Of
+            # see if either player has enough wins
+            if (self.game_type[0] == 2):
+                if self.best_of_reached(self.game_rounds):
+                    print(f"Best of {self.game_rounds} reached!")
+                    break
+        #
+        self.announce_final()
+
+    def best_of_reached(self, game_rounds):
+        #
+        # declare local variables
+        limit = 0
+        #
+        # set limit to the integer above half rounds
+        limit = math.ceil(game_rounds / 2)
+        if ((len(self.player1.winning_move_list) == limit) or
+           (len(self.player2.winning_move_list) == limit)):
+            return True
+        else:
+            return False
+
+    def announce_final(self):
+        #
+        p1_wins = len(self.player1.winning_move_list)
+        p2_wins = len(self.player2.winning_move_list)
+        if p1_wins > p2_wins:
+            print(f"{self.player1.name} wins!")
+        elif p2_wins > p1_wins:
+            print(f"{self.player2.name} wins!")
+        else:
+            print("It's a tie!")
+        print(f"Final score: {self.player1.name} - {p1_wins}")
+        print(f"Final score: {self.player2.name} - {p2_wins}")
 
     def instantiate_player(self, player):
         #
@@ -174,7 +230,7 @@ class Game:
         if game_type == 1:
             game_type_list = [1, 1, 100, "Set Rounds"]
         else:
-            game_type_list = [2, 3, 100, "Best of Rounds"]
+            game_type_list = [2, 3, 99, "Best of Rounds"]
         return game_type_list
 
     def request_game_type(self):
@@ -190,14 +246,23 @@ class Game:
     def num_of_rounds(self):
         #
         # declare local variables
-        min, max = 0, 0
+        min, max, rounds = 0, 0, 0
         #
         # retrieve game min and max rounds, print options, and
         # return reply
         min = self.game_type[1]
         max = self.game_type[2]
         print(f"\nPlease enter number of rounds ({min} to {max}):")
-        return self.get_int_value(min, max)
+        #
+        if (self.game_type[0] == 1):
+            rounds = self.get_int_value(min, max)
+        else:
+            while True:
+                print("(the number must be odd)")
+                rounds = self.get_int_value(min, max)
+                if (rounds % 2 != 0):
+                    break
+        return rounds
 
     def request_name(self):
         #
