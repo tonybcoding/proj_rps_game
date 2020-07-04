@@ -10,7 +10,7 @@ class Game:
         #
         # display intro, request user's name and
         # initialize game settings
-        self.display_intro()
+        self.display_intro("Welcome to Rock, Paper, Scissors!")
         self.game_settings()
         #
         # for each gamer in list, instantiate the appropriate player object
@@ -25,6 +25,7 @@ class Game:
         print(f"\n{self.player1.name} and {self.player2.name} "
               f"have entered the ring!")
         print(f"Game starts now!\n")
+        #
         #
         # sending opponent object so current play can compare
         p1_move = ""
@@ -108,24 +109,21 @@ class Game:
 
     def computer_player_type(self, player_num):
         #
-        # print menu of options, get input, and append to list
-        type = []
+        # declare locat variables
+        type = 0
         options = [[1, "PC-Random"], [2, "PC-Reflects"], [3, "PC-Cycles"],
-                   [4, "PC-Learns"]]
+                   [4, "PC-Learns"], [5, "Surprise me!"]]
+        #
+        # print menu of options, get input, and append to list
         print(f"\nPlease select computer player ## {player_num} ## type:")
         self.print_options(options)
-        print("(5) Surprise me!")
-        type.append(self.get_int_value(1, 5))
+        type = (self.get_int_value(options[0][0], options[-1][0]))
         #
         # if "surprise me", then reset type[0] to random value 1-4
-        if type[0] == 5:
-            type[0] = random.randint(1, 4)
+        type = random.randint(1, 4) if type == 5 else type
         #
-        # assign descriptions
-        for n in options:
-            if type[0] == n[0]:
-                type.append(n[1])
-        return type
+        # return appropriate index of option
+        return options[type-1]
 
     def print_options(self, menu_list):
         #
@@ -148,8 +146,12 @@ class Game:
 
     def is_human_playing(self):
         #
+        # declare local variables
+        query = 0
         options = [[1, "Play against the Computer"],
                    [2, "Have Computer play against a second Computer player"]]
+        #
+        # print menu options and get input
         print("\nWhould you like to:")
         self.print_options(options)
         query = self.get_int_value(1, 2)
@@ -163,6 +165,7 @@ class Game:
         # declare local variables
         game_type_list = []
         game_type = self.request_game_type()
+        #
         # set user name and game type for this instance
         # game_type list[integer value of game type,
         #                min number of rounds for type,
@@ -176,21 +179,30 @@ class Game:
 
     def request_game_type(self):
         #
+        # declare local variables
         options = [[1, "Set Rounds"], [2, "Best of Rounds"]]
+        #
+        # print menu options and return results
         print(f"\nWould you like to play:")
         self.print_options(options)
-        mode = self.get_int_value(1, 2)
-        return mode
+        return self.get_int_value(1, 2)
 
     def num_of_rounds(self):
         #
+        # declare local variables
+        min, max = 0, 0
+        #
+        # retrieve game min and max rounds, print options, and
+        # return reply
         min = self.game_type[1]
         max = self.game_type[2]
         print(f"\nPlease enter number of rounds ({min} to {max}):")
-        rounds = self.get_int_value(min, max)
-        return rounds
+        return self.get_int_value(min, max)
 
     def request_name(self):
+        #
+        # declare local variables
+        user_name = ""
         #
         # request name until user actually enters something
         while True:
@@ -201,16 +213,19 @@ class Game:
                 break
         return user_name
 
-    def display_intro(self):
+    def display_intro(self, message):
+        #
+        # declare local variables
+        n, banner_len = 0, 0
+        space = "", ""
         #
         # create white space and present title
         banner_len = 80
-        welcome = "Welcome to Rock, Paper, Scissors!"
-        space = " " * (int(banner_len/2) - int(len(welcome)/2))
+        space = " " * (int(banner_len/2) - int(len(message)/2))
         print("\n" * 30)
         for n in range(3):
             print("/" * banner_len)
-        print(f"\n{space}{welcome}\n")
+        print(f"\n{space}{message}\n")
         for n in range(3):
             print("/" * banner_len)
         print("\n")
@@ -290,7 +305,9 @@ class SmartPlayer(Player):
 
     def build_win_count_list(self, full_win_list):
         #
+        # declare local variables
         win_count_list = []
+        #
         for n in range(len(legal_moves)):
             win_count_list.append([legal_moves[n],
                                   full_win_list.count(legal_moves[n])])
@@ -298,7 +315,9 @@ class SmartPlayer(Player):
 
     def most_won_move(self, win_count_list):
         #
+        # declare local variables
         winning_move = []
+        #
         winning_move = win_count_list[0]
         for n in range(1, len(win_count_list)):
             if (win_count_list[n][1] > winning_move[1]):
@@ -311,7 +330,9 @@ class HumanPlayer(Player):
     # override superclass learn method
     def learn(self, opponent):
         #
+        # declare local variables
         options = []
+        #
         print(f"{self.name}, please select your next move:")
         for n in range(len(legal_moves)):
             # n + 1 so that menu displasy 1, 2, 3, etc., instead
