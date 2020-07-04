@@ -50,6 +50,9 @@ class Game:
             # persist winning move of player 2
             self.player2.winning_move_list.append(p2_move)
             print(f"{self.player2.name} wins")
+        print(f"Current score: {self.player1.name}-"
+              f"{len(self.player1.winning_move_list)} and "
+              f"{self.player2.name}-{len(self.player2.winning_move_list)}")
 
     def get_next_moves(self, round):
         #
@@ -124,8 +127,10 @@ class Game:
         elif player[0] == 1:
             new_player = RandomPlayer(player[1])
         elif player[0] == 2:
-            new_player = ReflectPlayer(player[1])
+            new_player = RockPlayer(player[1])
         elif player[0] == 3:
+            new_player = ReflectPlayer(player[1])
+        elif player[0] == 4:
             new_player = CyclePlayer(player[1])
         # must be last option
         else:
@@ -167,8 +172,8 @@ class Game:
         #
         # declare locat variables
         type = 0
-        options = [[1, "PC-Random"], [2, "PC-Reflects"], [3, "PC-Cycles"],
-                   [4, "PC-Learns"], [5, "Surprise me!"]]
+        options = [[1, "PC-Random"], [2, "PC-Rock Only"], [3, "PC-Reflects"],
+                   [4, "PC-Cycles"], [5, "PC-Learns"], [6, "Surprise me!"]]
         #
         # print menu of options, get input, and append to list
         print(f"\nPlease select computer player ## {player_num} ## type:")
@@ -176,7 +181,7 @@ class Game:
         type = (self.get_int_value(options[0][0], options[-1][0]))
         #
         # if "surprise me", then reset type[0] to random value 1-4
-        type = random.randint(1, 4) if type == 5 else type
+        type = random.randint(1, 5) if type == 6 else type
         #
         # return appropriate index of option
         return options[type-1]
@@ -318,6 +323,13 @@ class Player:
 class RandomPlayer(Player):
     # use all super class methods and properties without change
     pass
+
+
+class RockPlayer(Player):
+    #
+    # override superclass learn method
+    def learn(self, opponent):
+        return legal_moves[0]
 
 
 class ReflectPlayer(Player):
