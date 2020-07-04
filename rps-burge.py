@@ -8,7 +8,7 @@ class Game:
 
     def __init__(self):
         #
-        # display intro, request user's name and 
+        # display intro, request user's name and
         # initialize game settings
         self.display_intro()
         self.game_settings()
@@ -34,12 +34,11 @@ class Game:
             p2_move = self.player2.throw(self.player1)
             print(f"(Round {n})\t", end="")
             play_str = (f"{self.player1.name} /{p1_move}/ vs. "
-                f"{self.player2.name} /{p2_move}/")
+                        f"{self.player2.name} /{p2_move}/")
             print(play_str + " " * (50 - len(play_str)), end="")
             # persist moves of both players
             self.player1.move_list.append(p1_move)
             self.player2.move_list.append(p2_move)
-
 
             # see who wins this round
             print("--> ", end="")
@@ -48,7 +47,7 @@ class Game:
             elif ((p1_move == "rock" and p2_move == "scissors") or
                   (p1_move == "scissors" and p2_move == "paper") or
                   (p1_move == "paper" and p2_move == "rock")):
-                # persist winning move of player 1 
+                # persist winning move of player 1
                 self.player1.winning_move_list.append(p1_move)
                 print(f"{self.player1.name} wins")
             else:
@@ -56,8 +55,10 @@ class Game:
                 self.player2.winning_move_list.append(p2_move)
                 print(f"{self.player2.name} wins")
 
-        print(f"Final score: {self.player1.name} - {len(self.player1.winning_move_list)}")
-        print(f"Final score: {self.player2.name} - {len(self.player2.winning_move_list)}")
+        print(f"Final score: {self.player1.name} - "
+              f"{len(self.player1.winning_move_list)}")
+        print(f"Final score: {self.player2.name} - "
+              f"{len(self.player2.winning_move_list)}")
 
     def instantiate_player(self, player):
         #
@@ -69,10 +70,11 @@ class Game:
             new_player = ReflectPlayer(player[1])
         elif player[0] == 3:
             new_player = CyclePlayer(player[1])
-        else: # must be last option
+        # must be last option
+        else:
             new_player = SmartPlayer(player[1])
         #
-        #print(f"Just instantiated player {type(new_player)}")
+        # print(f"Just instantiated player {type(new_player)}")
         return new_player
 
     def game_settings(self):
@@ -217,17 +219,17 @@ class Game:
 
 
 class Player:
-    #
+
     # all subclasses to execute setting of name
     def __init__(self, player_name):
         self.name = player_name
         self.move_list = []
         self.winning_move_list = []
-    #
+
     # default class behavior is random selection
     def learn(self, opponent):
         return random.choice(legal_moves)
-    #
+
     # choose next move based on sub-class specific learning
     def throw(self, opponent):
         return self.learn(opponent)
@@ -274,7 +276,7 @@ class SmartPlayer(Player):
         # a randomly chosen interval between 12 and 20,
         # choose randomly
         if ((len(self.move_list) <= 3) or
-            (len(self.move_list) % random.randint(12, 20) == 0)):
+           (len(self.move_list) % random.randint(12, 20) == 0)):
             return (random.choice(legal_moves))
         #
         # otherwise, let's analyze winning weapons
@@ -282,8 +284,8 @@ class SmartPlayer(Player):
             win_count_list = self.build_win_count_list(
                 self.winning_move_list +
                 opponent.winning_move_list)
-            #winning_move = self.most_won_move(win_count_list)
-            #return (winning_move[0])
+            # winning_move = self.most_won_move(win_count_list)
+            # return (winning_move[0])
             return self.most_won_move(win_count_list)[0]
 
     def build_win_count_list(self, full_win_list):
@@ -291,7 +293,7 @@ class SmartPlayer(Player):
         win_count_list = []
         for n in range(len(legal_moves)):
             win_count_list.append([legal_moves[n],
-                full_win_list.count(legal_moves[n])])    
+                                  full_win_list.count(legal_moves[n])])
         return win_count_list
 
     def most_won_move(self, win_count_list):
@@ -322,7 +324,7 @@ class HumanPlayer(Player):
         # and returns that value's string[1]
         return options[(Game.get_int_value(self, options[0][0],
                        options[-1][0])) - 1][1]
-        
+
 
 # main
 if __name__ == '__main__':
