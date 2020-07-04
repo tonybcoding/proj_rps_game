@@ -27,11 +27,9 @@ Games Class
 Note: Game has two Players (instantiates two player objects)
 
 
-Game Displays Intro
-
-Game asks the desired game type, number of rounds and type of players
-
-Game "introduces"/creates two players of type selected
+DONE: Game Displays Intro
+DONE: Game asks the desired game type, number of rounds and type of players
+DONE: Game "introduces"/creates two players of type selected
 
 Game asks players to make moves
 

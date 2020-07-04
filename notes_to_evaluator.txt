@@ -1,0 +1,23 @@
+Dear Evaluator,
+
+This project (and this added lesson) were just what I’ve been looking for. I’ve been programming for years, but after moving to product management in the early 2000s, I never picked up object-oriented design and programming. I took this project as an opportunity to really learn, so it is quite longer than was called for.
+
+Beyond the project rubric, I wanted to test my OO skills. Here’s the idea of the game:
+
+Display introduction
+Set up game by asking several questions:
+* Type of game: Set Rounds or Best of Rounds
+* Enter the number of rounds.
+** If Best of Rounds was selected, the number must be odd
+* Select whether you want to play a computer player or have the computer player play another computer player
+* For computer players, let the user decide which type, or “Surprise me!” by letting the computer pick the type
+* The computer then plays the rounds
+** ties are not permitted, and the computer will replay the round
+* The game ends when either the number of rounds are hit or, if Best Of Rounds selected, over half have been won
+* The displays each round and the final tally
+* I also added a player that "learns" based off very rudimentary analysis of past winning moves with a bit of randomness thrown in.
+
+This was a great project! I look forward to your review.
+
+Best regards,
+Tony
