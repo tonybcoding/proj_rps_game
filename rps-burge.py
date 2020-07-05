@@ -32,7 +32,7 @@ class Game:
         p1_move, p2_move = move_list[0], move_list[1]
         #
         # check who won and add won item to winners list
-        move_winner = self.get_move_winner(p1_move, p2_move)
+        self.get_move_winner(p1_move, p2_move)
         #
         # persist moves of both players
         self.player1.move_list.append(p1_move)
